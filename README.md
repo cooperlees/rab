@@ -65,5 +65,6 @@ nft insert rule inet filter OUTPUT position 0 icmpv6 type {nd-router-advert} dro
 ```shell
 nft delete rule inet filter OUTPUT handle X
 ```
+
 - X == handle ID integer. To find:
   - `nft list table inet filter -n -a`
