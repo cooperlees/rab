@@ -8,7 +8,7 @@ ptr_params = {
     "entry_point_module": "rab/__init__",
     "test_suite": "rab.tests.base",
     "test_suite_timeout": 10,
-    "required_coverage": {"rab/__init__.py": 40},
+    "required_coverage": {"rab/__init__.py": 30},
     "run_black": True,
     "run_mypy": True,
     "run_flake8": True,

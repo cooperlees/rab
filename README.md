@@ -30,6 +30,21 @@ A check is a condition that if it fails, RAs will be blocked on internal ports. 
 
 Please refer to [default_config.json](default_config.json). Will document once finalized.
 
+## rab + Docker
+
+rab is designed to run with host networking + capabilities to allow it to manipulate netlink.
+Commands to start rab in this mode:
+
+Capabilities:
+
+- `CAP_NET_ADMIN`: Allow manipulation of nftable rules
+
+Docker Commands:
+
+- `docker pull cooperlees/rab:latest` - Coming once working ...
+  - `docker build -t rab .`
+- `docker run --name=rab --cap-add=NET_ADMIN --network=host ...`
+
 ## Code Design
 
 Remove this when done.
