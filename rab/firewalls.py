@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, Dict
 
 from pyroute2.iproute import IPRoute
-from pyroute2.nftables import NFTables
+from pyroute2.nftables.main import NFTables
 
 
 LOG = logging.getLogger(__name__)
