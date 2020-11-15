@@ -1,0 +1,8 @@
+{
+    "wan": {
+        "interfaces": []
+    },
+    "internal": {
+        "interfaces": []
+    }
+}
