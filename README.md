@@ -36,7 +36,7 @@ Remove this when done.
 
 rab/:
 
-```
+```console
 - __init__.py - Entry point
 - checks.py
     - Check class
@@ -47,3 +47,23 @@ rab/:
 - ra.py
     - RA class class (async send out a RA with lifetime 0)
 ```
+
+## Manual Firewall Commands
+
+### nftables
+
+The manual CLI commands to what `rab` will do via nftables API.
+
+#### add rule
+
+```shell
+nft insert rule inet filter OUTPUT position 0 icmpv6 type {nd-router-advert} drop
+```
+
+#### del rule
+
+```shell
+nft delete rule inet filter OUTPUT handle X
+```
+- X == handle ID integer. To find:
+  - `nft list table inet filter -n -a`
