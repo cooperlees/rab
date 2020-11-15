@@ -5,12 +5,12 @@ from setuptools import setup
 
 
 ptr_params = {
-    "entry_point_module": "rab",
+    "entry_point_module": "rab/__init__",
     "test_suite": "rab.tests.base",
     "test_suite_timeout": 10,
     "required_coverage": {"rab/__init__.py": 1},
     "run_black": True,
-    "run_mypy": False,  # enable once we have code :D
+    "run_mypy": True,
     "run_flake8": True,
 }
 
@@ -27,7 +27,7 @@ def get_long_desc() -> str:
 
 
 setup(
-    name=ptr_params["entry_point_module"],
+    name="rab",
     version="20.11.14",
     description="RA Blocker stops RAs while your WAN is down",
     long_description=get_long_desc(),
@@ -48,6 +48,6 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=["pyroute2"],
-    entry_points={"console_scripts": ["rab = rab:__init__"]},
+    entry_points={"console_scripts": ["rab = rab:main"]},
     test_suite=ptr_params["test_suite"],
 )

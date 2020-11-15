@@ -23,10 +23,11 @@ jobs:
       run: |
         python -m pip install --upgrade coverage pip setuptools
 
-    - name: Install rab
+    - name: Install rab + test help
       run: |
         python -m pip install -r requirements.txt
         python -m pip install .
+        rab --help
 
     - name: Run ptr CI
       run: |

@@ -1,8 +1,9 @@
 {
-    "wan": {
+    "checks": [],
+    "internal": {
         "interfaces": []
     },
-    "internal": {
+    "wan": {
         "interfaces": []
     }
 }
