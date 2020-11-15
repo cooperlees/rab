@@ -28,28 +28,22 @@ A check is a condition that if it fails, RAs will be blocked on internal ports. 
 
 ## rab Config
 
-TBA. Example coming.
-
-```json
-{
-    "wan": {
-        "interfaces": []
-    },
-    "internal": {
-        "interfaces": []
-    }
-}
-```
+Please refer to [default_config.json](default_config.json). Will document once finalized.
 
 ## Code Design
 
-rab
-    - __init__.py - Entry point
-    - checks.py
-        - Check class
-        - DefaultRouteCheck class
-    - firewalls.py
-        - Firewall class
-        - Nftables class
-    - ra.py
-        - RA class class (async send out a RA with lifetime 0)
+Remove this when done.
+
+rab/:
+
+```
+- __init__.py - Entry point
+- checks.py
+    - Check class
+    - DefaultRouteCheck class
+- firewalls.py
+    - Firewall class
+    - Nftables class
+- ra.py
+    - RA class class (async send out a RA with lifetime 0)
+```

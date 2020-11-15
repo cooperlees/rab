@@ -1,9 +1,10 @@
 {
+    "check_interval": 5,
     "checks": [],
     "internal": {
-        "interfaces": []
+        "interfaces": ["eth0"]
     },
     "wan": {
-        "interfaces": []
+        "interfaces": ["eth1"]
     }
 }

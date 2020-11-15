@@ -8,7 +8,7 @@ ptr_params = {
     "entry_point_module": "rab/__init__",
     "test_suite": "rab.tests.base",
     "test_suite_timeout": 10,
-    "required_coverage": {"rab/__init__.py": 1},
+    "required_coverage": {"rab/__init__.py": 40},
     "run_black": True,
     "run_mypy": True,
     "run_flake8": True,
@@ -39,7 +39,7 @@ setup(
     license="BSD",
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: BSD License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.7",
