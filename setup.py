@@ -10,7 +10,7 @@ ptr_params = {
     "test_suite_timeout": 10,
     "required_coverage": {"rab/__init__.py": 1},
     "run_black": True,
-    "run_mypy": True,
+    "run_mypy": False,  # enable once we have code :D
     "run_flake8": True,
 }
 
