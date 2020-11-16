@@ -1,22 +1,31 @@
 # rab
 
-RA Blocker stops RAs while your WAN is down. This helps having RA's stop
-advertising to your Internal LAN when your WAN.
+RA Blocker (`rab`) stops RAs while your WAN is down. The code is written
+abstractly so we can insert different firewalls to drive + run arbitrary
+amounts of "checks" to detect if your WAN is currently down. `rab` will
+also keep checking and allow sending of RAs once X checks have passed
+Y times again.
 
-- On failure we also send a RA with lifetime of 0 to encourage clients to remove Autoconf + Gateway
-  - This helps fail over to your backup IPv6 connection (that you'll generally have a lower priority RA advertising)
+## Planned
 
-Will use this a POC to show `system-networkd` and other RA daemons that this functionality is useful for a home router.
+- Multiple WAN interface support
+  - Today we have only tested with 1 WAN interface and 1 check (sure there is bugs)
+- On failure also send a RA with lifetime of 0 to encourage clients to defactivate Autoconf + remove this devices as a Gateway
+  - This helps fail over to your backup IPv6 connection *(that is recommended to have a lower priority RA advertising)*
+- Per interface RA blocking rules
+  - Today if any interface fails we block all Outgoing RAs
+
+Will use this a POC to show `system-networkd` and other RA daemons that this functionality is useful for a home/office router.
 
 ## Overview
 
-RA Blocker (drb for short) takes a config file of "WAN" interface(s) and runs a series of checks
-on that interface and if any fail it will block RAs into your "INTERNAL" interface(s) using a firewalls
+RA Blocker (`rab` for short) takes a config file of "WAN" interface(s) and runs a series of checks
+on that interface. If any fail it will block RAs into your "INTERNAL" interface(s) using a firewall.
 
 ## Firewalls Supported
 
-rab is coded in a way that any firewall support can be added. You just need to subclass Firewall and add
-the methods to add and remove the blocking rules.
+`rab` is coded in a way that any firewall support can be added. You just need to subclass Firewall and add
+the methods to add and remove the blocking rule(s).
 
 - [nftables](https://nftables.org/)
 
@@ -24,7 +33,7 @@ the methods to add and remove the blocking rules.
 
 A check is a condition that if it fails, RAs will be blocked on internal ports. Current checks:
 
-- Default route on a/all WAN interfaces
+- Default route exists on all WAN interfaces
 
 ## rab Config
 
@@ -37,7 +46,7 @@ Commands to start rab in this mode:
 
 Capabilities:
 
-- `CAP_NET_ADMIN`: Allow manipulation of nftable rules
+- `CAP_NET_ADMIN`: Allow manipulation of nftable rules (today via `nft` cli 😢)
 
 Docker Commands:
 
@@ -51,23 +60,21 @@ Remove this when done.
 
 rab/:
 
-```console
-- __init__.py - Entry point
-- checks.py
-    - Check class
-    - DefaultRouteCheck class
-- firewalls.py
-    - Firewall class
-    - Nftables class
-- ra.py
-    - RA class class (async send out a RA with lifetime 0)
-```
+- `__init__.py` - Entry point
+- `checks.py`
+  - Check class
+  - DefaultRouteCheck class
+- `firewalls.py`
+  - Firewall class
+  - Nftables class
+- `ra.py`
+  - RA class class: async send out a RA with lifetime 0 to urge clients to stop using this router + prefixes
 
 ## Manual Firewall Commands
 
 ### nftables
 
-The manual CLI commands to what `rab` will do via nftables API.
+The manual CLI commands to what `rab` uese. One day we'll hopefully use the nftables netlink API.
 
 #### add rule
 
@@ -81,5 +88,5 @@ nft insert rule inet filter OUTPUT position 0 icmpv6 type {nd-router-advert} dro
 nft delete rule inet filter OUTPUT handle X
 ```
 
-- X == handle ID integer. To find:
-  - `nft -n -a list table inet filter`
+- X == handle ID integer. To find the handle int:
+  - `nft [--json] -n -a list table inet filter`
