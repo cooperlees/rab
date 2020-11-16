@@ -37,7 +37,7 @@ setup(
     description="RA Blocker stops RAs while your WAN is down",
     long_description=get_long_desc(),
     long_description_content_type="text/markdown",
-    py_modules=["rab", "rab.tests"],
+    packages=["rab", "rab.tests"],
     url="http://github.com/cooperlees/rab",
     author="Cooper Lees",
     author_email="me@cooperlees.com",
