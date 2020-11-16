@@ -9,10 +9,10 @@ ptr_params = {
     "test_suite": "rab.tests.base",
     "test_suite_timeout": 10,
     "required_coverage": {
-        "rab/__init__.py": 70,
-        "rab/firewalls.py": 40,
+        "rab/__init__.py": 60,
+        "rab/firewalls.py": 50,
         "rab/utils.py": 65,
-        "TOTAL": 50,
+        "TOTAL": 60,
     },
     "run_black": True,
     "run_mypy": True,
@@ -33,7 +33,7 @@ def get_long_desc() -> str:
 
 setup(
     name="rab",
-    version="20.11.14",
+    version="20.11.15",
     description="RA Blocker stops RAs while your WAN is down",
     long_description=get_long_desc(),
     long_description_content_type="text/markdown",

@@ -6,6 +6,7 @@ import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
 from subprocess import CalledProcessError
+from types import MappingProxyType
 from typing import Dict, List, Optional, Sequence, Tuple
 
 # Couldn't get to work for nftables with inet tables
@@ -24,6 +25,12 @@ class Firewall(ABC):
     - removeRules: Remove the RA blocking rule(s)
     - listRules: Find RA blocking rule(s)
       - Probably used by removed rules"""
+
+    def __init__(self, dryrun: bool = False) -> None:
+        self.dryrun = dryrun
+        self.dr_pre = ""
+        if dryrun:
+            self.dr_pre = "[DRYRUN]"
 
     async def _run_cmd(
         self, cmd: Sequence[str], errors: int = 0, timeout: float = 5
@@ -92,12 +99,14 @@ class NftablesCLI(Firewall):
             "{nd-router-advert}",
             "drop",
         )
-        if existing_rules := self.rulesExist():
+        if existing_rules := await self.rulesExist():
             existing_rule_count = len(existing_rules)
             LOG.error(f"{existing_rule_count} rules already exist")
             return len(existing_rules)
 
-        self._run_cmd(cmd, errors)
+        LOG.info(f"{self.dr_pre} running '{' '.join(cmd)}'")
+        if not self.dryrun:
+            self._run_cmd(cmd, errors)
         return errors
 
     async def delRules(self, rule_ids: Sequence[int] = ()) -> int:
@@ -113,7 +122,9 @@ class NftablesCLI(Firewall):
                 "handle",
                 str(rule_id),
             )
-            await self._run_cmd(cmd, errors)
+            LOG.info(f"{self.dr_pre} running '{' '.join(cmd)}'")
+            if not self.dryrun:
+                await self._run_cmd(cmd, errors)
 
         return errors
 
@@ -132,7 +143,7 @@ class NftablesCLI(Firewall):
         )
         stdout, stderr = await self._run_cmd(cmd, timeout=timeout)
         if stdout:
-            return json.loads(stdout)
+            return dict(json.loads(stdout))
         return {}
 
     async def rulesExist(self) -> Sequence[int]:
@@ -151,8 +162,13 @@ class NftablesCLI(Firewall):
         return found_rules
 
 
+_firewalls = {
+    "nftables": NftablesCLI,
+}
+FIREWALLS = MappingProxyType(_firewalls)
+
+
 if __name__ == "__main__":
-    # Testing ...
-    nft = NftablesCLI()
+    nft = FIREWALLS["nftables"]()
     rules = asyncio.run(nft.listRules())
     print(json.dumps(rules, indent=2))
