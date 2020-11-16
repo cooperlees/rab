@@ -19,7 +19,5 @@ class UtilsTests(unittest.TestCase):
         expected = (b"unittest\n", None)
         self.assertEqual(
             expected,
-            self.loop.run_until_complete(
-                gen_check_output((echo_path, "unittest"), 1)
-            ),
+            self.loop.run_until_complete(gen_check_output((echo_path, "unittest"), 1)),
         )
