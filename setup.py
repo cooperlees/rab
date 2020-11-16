@@ -7,7 +7,7 @@ from setuptools import setup
 ptr_params = {
     "entry_point_module": "rab/__init__",
     "test_suite": "rab.tests.base",
-    "test_suite_timeout": 10,
+    "test_suite_timeout": 30,
     "required_coverage": {
         "rab/__init__.py": 60,
         "rab/firewalls.py": 50,
