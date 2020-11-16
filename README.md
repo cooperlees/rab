@@ -82,4 +82,4 @@ nft delete rule inet filter OUTPUT handle X
 ```
 
 - X == handle ID integer. To find:
-  - `nft list table inet filter -n -a`
+  - `nft -n -a list table inet filter`
